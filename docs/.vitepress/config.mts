@@ -81,6 +81,6 @@ export default defineConfig({
       copyright:'Copyright@ 2024 Howe'
     }
   },
-  base:'/Howe-ljh.github.io'
+  base:'repo'
 })
 
