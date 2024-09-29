@@ -4,8 +4,8 @@ layout: home
 home: true
 
 # https://vitepress.dev/reference/default-theme-home-page
-title: 嘿，小爱同学
-titleTemplate: Hi，终于等到你
+title: web前端-刘俊豪
+titleTemplate: 
 editLink: true
 lastUpdated: true
 
