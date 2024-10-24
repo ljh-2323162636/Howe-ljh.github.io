@@ -23,6 +23,10 @@ export default defineConfig({
           {
             text: 'Element-ui遇到的问题',
             link: '/column/Algorithm/element-ui.md' // 对应docs/column/Algorithm下的idnex.md文件
+          },
+          {
+            text: '读书日记-平凡的世界',
+            link: '/column/Algorithm/pfdsj.md' // 对应docs/column/Algorithm下的idnex.md文件
           }
         ]
       }
