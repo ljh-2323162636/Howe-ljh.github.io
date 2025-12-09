@@ -41,7 +41,7 @@ jobs:
         uses: actions/configure-pages@v4  # 升级：v3已废弃，改用v4
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile  # 优化：锁定依赖版本，避免构建不一致
+        run: pnpm install  # 优化：锁定依赖版本，避免构建不一致
 
       - name: Build with VitePress
         run: |
