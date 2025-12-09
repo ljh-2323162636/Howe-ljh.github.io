@@ -4,8 +4,8 @@ layout: home
 home: true
 
 # https://vitepress.dev/reference/default-theme-home-page
-title: 嘿，小爱同学
-titleTemplate: Hi，终于等到你
+title: web前端-刘俊豪
+titleTemplate: 
 editLink: true
 lastUpdated: true
 
@@ -25,15 +25,15 @@ hero:
       link: /column/Growing/
 features:
   - icon: 🤹‍♀️
-    title: Web后端
+    title: Web前端
     details: 某厂程序猿，国内某互联网厂搬砖。
     link: /column/views/guide
   - icon: 👩‍🎨‍
     title: 喜欢美学
     details: 热爱一切美学，喜欢用各种设计工具造图。
   - icon: 🧩
-    title: 斜杆青年
-    details: 是个平平无奇但是又很热爱学习的斜杆青年。
+    title: 爱听歌的渣渣
+    details: 是个重度听歌患者。
 ---
 
 
