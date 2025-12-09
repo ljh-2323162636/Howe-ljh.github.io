@@ -10,7 +10,7 @@ editLink: true
 lastUpdated: true
 
 hero:
-    name: 好记性不如烂笔头
+    name: 好记性不如烂笔头1
     text: Stay foolish, Stay hungry.
     tagline: /斜杠青年/人间清醒/工具控/
     image:
