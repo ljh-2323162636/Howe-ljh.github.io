@@ -2,9 +2,10 @@ name: Deploy VitePress site to Pages
 
 on:
   push:
-    branches: [master]  # 若主分支是main，需改为main
+    branches: [master]  # 若仓库主分支是main，需改为main
+  workflow_dispatch:   # 新增：允许手动触发，方便调试
 
-# 设置token访问权限（保持最小权限原则）
+# 设置token访问权限（保持最小权限）
 permissions:
   contents: read
   pages: write
@@ -21,36 +22,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # 升级到v4（废弃v3）
+        uses: actions/checkout@v4  # 升级：v3已废弃，改用v4
         with:
-          fetch-depth: 0  # VitePress的lastUpdated需要完整提交历史
+          fetch-depth: 0 # VitePress的lastUpdated需要完整提交历史
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3  # 升级到v3（适配Node.js 20+）
+        uses: pnpm/action-setup@v3  # 升级：v2适配性差，改用v3
         with:
-          version: 8.15.5  # 保持指定版本，也可写8.x自动用最新8系
+          version: 8.15.5 # 保留指定pnpm版本
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4  # 升级到v4（废弃v3）
+      - name: Setup Node
+        uses: actions/setup-node@v4  # 升级：v3已废弃，改用v4
         with:
-          node-version: 20  # 保持20版本（LTS稳定版）
-          cache: pnpm  # 缓存pnpm依赖，加速构建
+          node-version: 20
+          cache: pnpm # 保留pnpm缓存
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4  # 升级到v4（废弃v3）
+        uses: actions/configure-pages@v4  # 升级：v3已废弃，改用v4
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile  # 加--frozen-lockfile确保依赖版本一致
+        run: pnpm install --frozen-lockfile  # 优化：锁定依赖版本，避免构建不一致
 
       - name: Build with VitePress
         run: |
-          pnpm run docs:build
-          touch docs/.vitepress/dist/.nojekyll  # 关键：.nojekyll要放到构建产物目录里！
+          pnpm run docs:build 
+          # 关键修复：.nojekyll必须创建在产物目录（否则GitHub Pages识别不到）
+          touch docs/.vitepress/dist/.nojekyll  
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3  # 升级到v3（废弃v2）
+        uses: actions/upload-pages-artifact@v3  # 升级：v2已废弃，改用v3
         with:
-          path: docs/.vitepress/dist  # 产物路径保持不变
+          path: docs/.vitepress/dist # 路径保留（确认本地该目录有index.html）
 
   # 部署工作
   deploy:
@@ -63,4 +65,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  # 升级到v4（废弃v2）
+        uses: actions/deploy-pages@v4  # 升级：v2已废弃，改用v4
