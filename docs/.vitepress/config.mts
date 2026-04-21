@@ -90,7 +90,7 @@ export default defineConfig({
     },
     logo:'./logo.svg',
     footer:{
-      copyright:'Copyright@ 2024 Howe'
+      copyright:`Copyright@ 2019-${new Date().getFullYear()} Howe`
     }
   },
   base:'/Howe-ljh.github.io'
