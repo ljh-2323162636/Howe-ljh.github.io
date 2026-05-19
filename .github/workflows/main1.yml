@@ -14,7 +14,7 @@ permissions:
 # 并发控制：避免重复部署
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   # 构建工作
