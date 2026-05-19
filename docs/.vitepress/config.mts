@@ -27,7 +27,11 @@ export default defineConfig({
           {
             text: '读书日记-平凡的世界',
             link: '/column/Algorithm/pfdsj.md' // 对应docs/column/Algorithm下的idnex.md文件
-          }
+          },
+           {
+            text: '每一天都值得纪念',
+            link: '/column/Algorithm/memory.md' // 对应docs/column/Algorithm下的idnex.md文件
+          },
         ]
       }
     ],
