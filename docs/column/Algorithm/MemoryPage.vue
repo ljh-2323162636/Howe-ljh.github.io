@@ -195,7 +195,12 @@ onMounted(() => {
     // 天数计算 - 根据实际开始日期调整,包含当天
     const startDate = new Date('2025-07-25');
     const today = new Date();
-    days.value = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+    // 统一重置时间为当天的0点，避免时分秒影响计算
+    const startDateOnly = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    days.value = Math.floor((todayOnly - startDateOnly) / (1000 * 60 * 60 * 24)) + 1;
 
     // 每300ms创建一个心形
     heartInterval = setInterval(createHeart, 300);
