@@ -1,6 +1,7 @@
 <template>
     <div>
         <div id="hearts-container"></div>
+        <div id="sakura-container"></div>
 
         <!-- 图片预览模态框 -->
         <div v-if="previewImage" class="image-preview-overlay" @click="closePreview">
@@ -139,6 +140,7 @@ const currentTime = ref('');
 const previewImage = ref(null);
 const previewCaption = ref('');
 let heartInterval = null;
+let sakuraInterval = null;
 let timeInterval = null;
 
 // 打开图片预览
@@ -207,6 +209,58 @@ const createHeart = () => {
     }, 7000);
 };
 
+// 创建樱花飘落效果
+const createSakura = () => {
+    const sakura = document.createElement('div');
+    sakura.className = 'sakura-petal';
+
+    const flowers = ['🌸', '🌺', '🏵️', '💮', '🌼'];
+    sakura.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+
+    // 随机起始位置 - 可以从顶部、左侧、右侧甚至屏幕中间出现
+    const startSide = Math.random();
+    if (startSide < 0.4) {
+        // 从顶部降落 (40%)
+        sakura.style.left = Math.random() * 100 + 'vw';
+        sakura.style.top = '-30px';
+    } else if (startSide < 0.7) {
+        // 从左侧飘入 (30%)
+        sakura.style.left = '-30px';
+        sakura.style.top = Math.random() * 60 + 'vh';
+    } else {
+        // 从右侧飘入 (30%)
+        sakura.style.right = '-30px';
+        sakura.style.top = Math.random() * 60 + 'vh';
+    }
+
+    const size = Math.random() * 22 + 12;
+    sakura.style.fontSize = size + 'px';
+
+    const duration = Math.random() * 10 + 10;
+    const sway = (Math.random() - 0.5) * 300;
+    const rotation = Math.random() * 360;
+    const rotationSpeed = (Math.random() - 0.5) * 1080;
+
+    sakura.style.setProperty('--duration', duration + 's');
+    sakura.style.setProperty('--sway', sway + 'px');
+    sakura.style.setProperty('--rotation', rotation + 'deg');
+    sakura.style.setProperty('--rotation-speed', rotationSpeed + 'deg');
+    sakura.style.setProperty('--start-opacity', Math.random() * 0.2 + 0.3);
+
+    const container = document.getElementById('sakura-container');
+    if (container) {
+        container.appendChild(sakura);
+    }
+
+    setTimeout(() => {
+        if (sakura.parentNode) {
+            sakura.style.transition = 'opacity 1.5s';
+            sakura.style.opacity = '0';
+            setTimeout(() => sakura.remove(), 1500);
+        }
+    }, duration * 1000);
+};
+
 // 更新时间函数
 const updateTime = () => {
     const now = new Date();
@@ -236,6 +290,9 @@ onMounted(() => {
     // 每300ms创建一个心形
     heartInterval = setInterval(createHeart, 300);
 
+    // 每150ms创建一个樱花
+    sakuraInterval = setInterval(createSakura, 150);
+
     // 立即更新一次时间
     updateTime();
     // 每秒更新一次时间
@@ -245,6 +302,9 @@ onMounted(() => {
 onUnmounted(() => {
     if (heartInterval) {
         clearInterval(heartInterval);
+    }
+    if (sakuraInterval) {
+        clearInterval(sakuraInterval);
     }
     if (timeInterval) {
         clearInterval(timeInterval);
@@ -322,15 +382,15 @@ onUnmounted(() => {
 
 .close-button {
     position: absolute;
-    top: -50px;
-    right: 0;
+    top: 20px;
+    right: 20px;
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.5);
     color: white;
-    font-size: 36px;
+    font-size: 24px;
     line-height: 1;
-    width: 48px;
-    height: 48px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s;
@@ -359,5 +419,105 @@ onUnmounted(() => {
 
 .photo-card img {
     pointer-events: none;
+}
+
+/* 主内容区域 - 确保在樱花上方 */
+.memory-container {
+    position: relative;
+    z-index: 10;
+}
+
+/* 心形容器 */
+#hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 心形飘落动画 */
+.heart {
+    position: fixed;
+    top: -50px;
+    animation: fall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+
+/* 樱花飘落动画 */
+#sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.sakura-petal {
+    position: absolute;
+    pointer-events: none;
+    animation: sakura-fall var(--duration) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+               sakura-sway 3s ease-in-out infinite,
+               sakura-flicker 4s ease-in-out infinite;
+    will-change: transform, opacity;
+    filter: blur(0.5px) drop-shadow(0 2px 4px rgba(255, 192, 203, 0.3));
+    text-shadow: 0 0 10px rgba(255, 192, 203, 0.5);
+    opacity: var(--start-opacity);
+}
+
+@keyframes sakura-fall {
+    0% {
+        transform: translateX(0) translateY(0) rotate(var(--rotation)) scale(0.6);
+        opacity: 0;
+    }
+    10% {
+        opacity: var(--start-opacity);
+        transform: translateX(20px) translateY(10vh) rotate(calc(var(--rotation) + 60deg)) scale(1);
+    }
+    50% {
+        opacity: calc(var(--start-opacity) * 0.7);
+    }
+    80% {
+        opacity: var(--start-opacity);
+    }
+    100% {
+        transform: translateX(var(--sway)) translateY(110vh) rotate(calc(var(--rotation) + var(--rotation-speed))) scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes sakura-sway {
+    0%, 100% {
+        margin-left: 0px;
+    }
+    25% {
+        margin-left: 50px;
+    }
+    50% {
+        margin-left: -30px;
+    }
+    75% {
+        margin-left: 40px;
+    }
+}
+
+@keyframes sakura-flicker {
+    0%, 100% {
+        opacity: var(--start-opacity);
+    }
+    50% {
+        opacity: calc(var(--start-opacity) * 0.4);
+    }
 }
 </style>
