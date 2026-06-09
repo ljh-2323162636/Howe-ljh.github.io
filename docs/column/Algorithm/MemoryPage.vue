@@ -1,81 +1,80 @@
 <template>
     <div>
         <div id="hearts-container"></div>
-        <div class="memory-container">
-            <div class="memory-hero">
-                <h1>💕 我爱你 💕</h1>
-                <div class="days-counter">
-                    我们在一起已经<br>
-                    <span class="number">{{ days }}</span> 天
-                    <div class="current-time">
-                        现在是 <span class="time">{{ currentTime }}</span>
-                    </div>
-                </div>
-                <p class="subtitle">520快乐,我的公主</p>
-                <p style="margin-top: 20px; font-size: 1.1em;">
-                    从相遇的那一刻起<br>
-                    每一天都因为有你而变得特别
-                </p>
+
+        <!-- 图片预览模态框 -->
+        <div v-if="previewImage" class="image-preview-overlay" @click="closePreview">
+            <div class="image-preview-content" @click.stop>
+                <img :src="previewImage" alt="预览图片" class="preview-image">
+                <button class="close-button" @click="closePreview">&times;</button>
+                <div class="preview-caption">{{ previewCaption }}</div>
             </div>
+        </div>
+
+        <div class="memory-container">
 
             <div class="gallery-section">
                 <h2 class="section-title">📸 我们的甜蜜瞬间</h2>
                 <div class="gallery">
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p1.jpg" alt="情侣对戒" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">情侣对戒</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p2.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">给大家介绍一下,这是我的老婆</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p3.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">我们在夕阳下热吻</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p4.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">那天老婆笑得好美呀</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p5.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">Wink的老婆也好美,是谁眼光这么好,买的东西这么好看呀</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p6.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">你往我的心脏开了一枪,我心动了</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p7.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">拿着我们的合照,记录下属于我们的时刻</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p8.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">老婆,你好香呀</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p9.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">幸福的一家五口</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p10.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">我想成为你的依靠</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p11.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">那天阳光正好</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p12.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">可可爱爱,没有脑袋</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p13.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">这张超级可爱,是我的聊天背景呢</div>
                     </div>
-                    <div class="photo-card">
+                    <div class="photo-card" @click="openPreview($event)">
                         <img src="/photos/p14.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">这是咱俩才知道的舌吻 哈哈</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p15.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">这是一个在阳光下熠熠生辉的梧桐叶</div>
                     </div>
                 </div>
             </div>
@@ -137,8 +136,40 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 const days = ref(300);
 const currentTime = ref('');
+const previewImage = ref(null);
+const previewCaption = ref('');
 let heartInterval = null;
 let timeInterval = null;
+
+// 打开图片预览
+const openPreview = (event) => {
+    // 从点击的元素中找到 img 和 caption 标签
+    const clickedElement = event.currentTarget;
+    const imgElement = clickedElement.querySelector('img');
+    const captionElement = clickedElement.querySelector('.photo-caption');
+
+    if (imgElement && imgElement.src) {
+        // 使用原始图片的完整 src 路径
+        previewImage.value = imgElement.src;
+
+        // 获取图片说明文字
+        if (captionElement) {
+            previewCaption.value = captionElement.textContent.trim();
+        }
+
+        // 阻止页面滚动
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+// 关闭图片预览
+const closePreview = () => {
+    previewImage.value = null;
+    previewCaption.value = '';
+
+    // 恢复页面滚动
+    document.body.style.overflow = '';
+};
 
 const createHeart = () => {
     const heart = document.createElement('div');
@@ -220,3 +251,113 @@ onUnmounted(() => {
     }
 });
 </script>
+
+<style>
+/* 图片预览模态框 */
+.image-preview-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 10000 !important;
+    cursor: pointer !important;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.image-preview-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    background: white;
+    display: block;
+}
+
+.preview-caption {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    right: 0;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.6;
+    padding: 10px 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    border-radius: 0 0 8px 8px;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 1),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.close-button {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 36px;
+    line-height: 1;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-weight: bold;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(90deg);
+}
+
+/* 照片卡片样式 */
+.photo-card {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.photo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.photo-card img {
+    pointer-events: none;
+}
+</style>
