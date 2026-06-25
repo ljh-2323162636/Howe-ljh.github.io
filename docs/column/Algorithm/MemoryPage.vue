@@ -13,7 +13,21 @@
         </div>
 
         <div class="memory-container">
-
+            <div class="memory-hero">
+                <h1>💕 我爱你 💕</h1>
+                <div class="days-counter">
+                    我们在一起已经<br>
+                    <span class="number">{{ days }}</span> 天
+                    <div class="current-time">
+                        现在是 <span class="time">{{ currentTime }}</span>
+                    </div>
+                </div>
+                <p class="subtitle">520快乐,我的公主</p>
+                <p style="margin-top: 20px; font-size: 1.1em;">
+                    从相遇的那一刻起<br>
+                    每一天都因为有你而变得特别
+                </p>
+            </div>
             <div class="gallery-section">
                 <h2 class="section-title">📸 我们的甜蜜瞬间</h2>
                 <div class="gallery">
@@ -288,10 +302,10 @@ onMounted(() => {
     days.value = Math.floor((todayOnly - startDateOnly) / (1000 * 60 * 60 * 24)) + 1;
 
     // 每300ms创建一个心形
-    heartInterval = setInterval(createHeart, 300);
+    heartInterval = setInterval(createHeart, 500);
 
     // 每150ms创建一个樱花
-    sakuraInterval = setInterval(createSakura, 150);
+    sakuraInterval = setInterval(createSakura, 500);
 
     // 立即更新一次时间
     updateTime();
@@ -460,7 +474,7 @@ onUnmounted(() => {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 0;
     overflow: hidden;
 }
 
