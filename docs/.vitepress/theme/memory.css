@@ -103,7 +103,10 @@
 .current-time .time {
     font-family: 'Courier New', monospace;
     font-weight: bold;
-    color: #ffd700;
+    background: linear-gradient(90deg, #C8B4E6, #8264B4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .subtitle {
