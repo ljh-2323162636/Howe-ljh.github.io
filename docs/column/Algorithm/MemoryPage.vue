@@ -91,6 +91,42 @@
                         <img src="/photos/p15.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">这是一个在阳光下熠熠生辉的梧桐叶</div>
                     </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p16.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">脑婆抽到拉布布开心的样子,可惜弄丢了,快来北京哥哥再买吧~</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p17.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">送脑婆回家家,滴,又一次打卡</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p18.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">这是AI生成的婚纱照,脑婆好美呀</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p19.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">记录一下第一次吃<很久以前>的脑婆,心心念念的羊肉串</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p20.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">北京的晚霞,美吧,不及我脑婆三分~</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p21.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">每日比心❤️ 现在早上醒来还有脑婆的各种连拍</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p22.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">秋水共长天一色 脑婆说这里好美</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p23.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">随手拍的天空 脑婆说好看</div>
+                    </div>   
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p24.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">这是我生日脑婆送的花花 颜值又高又香 美丽的废物 ~</div>
+                    </div>
                 </div>
             </div>
 
@@ -116,6 +152,11 @@
                         <div class="timeline-dot"></div>
                         <div class="timeline-date">第300天 · 520</div>
                         <div class="timeline-content">第三个100天,这100天好难呀,幸好,我们还在一起</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">第400天 · 20260828</div>
+                        <div class="timeline-content">400天最好的礼物就是脑婆来北京啦,期待期待嘿嘿~破台风,我劝你懂点事,耗子尾汁!</div>
                     </div>
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
