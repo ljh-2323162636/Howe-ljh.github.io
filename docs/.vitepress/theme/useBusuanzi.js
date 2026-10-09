@@ -1,7 +1,12 @@
 import { computed, inject, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 
-const ENDPOINT = 'https://counter.busuanzi.icodeq.com/'
-const CACHE_PREFIX = 'howe:busuanzi:icodeq:v1:'
+// 多个可用计数源，同时发起、竞速取先返回者。不蒜子官方与镜像各自都会偶发抽风，
+// 单点押注任何一家都不稳，所以并行请求、任一存活即可显示，全部失败才降级。
+const SOURCES = [
+  { name: 'ibruce', endpoint: 'https://busuanzi.ibruce.info/busuanzi' },
+  { name: 'icodeq', endpoint: 'https://counter.busuanzi.icodeq.com/' },
+]
+const CACHE_PREFIX = 'howe:busuanzi:v2:'
 const CACHE_TTL = 24 * 60 * 60 * 1000
 const CounterKey = Symbol('busuanzi')
 let callbackSequence = 0
@@ -10,6 +15,7 @@ function parseCounts(payload) {
   const counts = {}
   for (const key of ['site_pv', 'page_pv']) {
     const value = payload?.[key]
+    // 官方返回 number、镜像返回 string，统一按数字字符串校验，拒绝注入与非法值。
     if (!/^\d+$/.test(String(value)) || !Number.isSafeInteger(Number(value))) return null
     counts[key] = Number(value)
   }
@@ -35,8 +41,9 @@ function saveCache(path, counts) {
   }
 }
 
-// 本地随站点打包，只请求计数接口，不再依赖远程 JS 二次加载和全局 DOM 写入。
-function requestCounts(timeout, success, failure) {
+// 向单个源发起一次 JSONP。请求与解析都在本地，随站点打包，不再依赖远程 JS 全局写入。
+// 返回取消函数：置位 settled 后，该源后续到达的响应/超时都会被忽略。
+function requestSource(endpoint, timeout, success, failure) {
   const callback = `HoweBusuanzi_${Date.now()}_${++callbackSequence}`
   const script = document.createElement('script')
   let settled = false
@@ -47,33 +54,33 @@ function requestCounts(timeout, success, failure) {
     script.onload = null
     script.onerror = null
     script.remove()
-    // 已取消的 JSONP 可能迟到，保留短期空回调，避免污染新页面或抛异常。
+    // 已取消的源可能迟到，保留短期空回调，避免污染新页面或抛异常。
     window[callback] = () => {}
     window.setTimeout(() => { delete window[callback] }, 60000)
   }
 
-  const fail = (reason) => {
+  const fail = () => {
     if (settled) return
     settled = true
     cleanup()
-    failure(reason)
+    failure()
   }
 
   window[callback] = (payload) => {
     if (settled) return
     const counts = parseCounts(payload)
-    if (!counts) return fail('invalid')
+    if (!counts) return fail()
     settled = true
     cleanup()
     success(counts)
   }
   script.async = true
-  script.src = `${ENDPOINT}?jsonpCallback=${callback}`
-  // 与服务商脚本一致：接口依赖 Referer 的页面路径区分每篇文章。
+  script.src = `${endpoint}?jsonpCallback=${callback}`
+  // 与不蒜子一致：接口依赖 Referer 的页面路径区分每篇文章。
   script.referrerPolicy = 'no-referrer-when-downgrade'
-  script.onerror = () => fail('network')
-  script.onload = () => { if (!settled) fail('invalid') }
-  timer = window.setTimeout(() => fail('timeout'), timeout)
+  script.onerror = fail
+  script.onload = () => { if (!settled) fail() }
+  timer = window.setTimeout(fail, timeout)
   document.head.appendChild(script)
 
   return () => {
@@ -83,7 +90,7 @@ function requestCounts(timeout, success, failure) {
   }
 }
 
-export function createBusuanziCounter({ timeout = 12000, retryDelay = 1500 } = {}) {
+export function createBusuanziCounter({ timeout = 10000 } = {}) {
   const data = ref(null)
   const status = ref('loading')
   const hint = computed(() => {
@@ -95,43 +102,40 @@ export function createBusuanziCounter({ timeout = 12000, retryDelay = 1500 } = {
   })
   let path = ''
   let revision = 0
-  let cancelRequest
-  let retryTimer
+  const cancels = []
   let requestedAt = 0
   let disposed = false
 
   const cleanup = () => {
-    cancelRequest?.()
-    cancelRequest = null
-    window.clearTimeout(retryTimer)
-    retryTimer = null
+    while (cancels.length) cancels.pop()()
   }
 
-  const request = (version, attempt = 0) => {
+  const request = (version) => {
     if (disposed || version !== revision) return
-    if (window.navigator.onLine === false) {
-      status.value = 'offline'
-      return
-    }
+    if (window.navigator.onLine === false) { status.value = 'offline'; return }
     status.value = 'loading'
     requestedAt = Date.now()
-    cancelRequest = requestCounts(timeout, (counts) => {
-      if (disposed || version !== revision) return
+    let pending = SOURCES.length
+
+    const win = (counts) => {
+      // 任一源先回即胜出；随后取消其余源，忽略一切迟到响应。
+      if (disposed || version !== revision || status.value === 'ready') return
+      cleanup()
       data.value = counts
       status.value = 'ready'
       saveCache(path, counts)
-    }, (reason) => {
+    }
+    const lose = () => {
       if (disposed || version !== revision) return
-      if (window.navigator.onLine === false) {
-        status.value = 'offline'
-      } else if (reason === 'network' && attempt === 0) {
-        // 明确加载失败时仅自动重试一次，避免在弱网下不断请求。
-        retryTimer = window.setTimeout(() => request(version, 1), retryDelay)
-      } else {
-        // 超时不等于未计数；接口没有幂等机制，不自动重发超时请求。
-        status.value = 'failed'
+      pending -= 1
+      // 只有全部源都落空、且尚无人成功时才降级。
+      if (pending === 0 && status.value !== 'ready') {
+        status.value = window.navigator.onLine === false ? 'offline' : 'failed'
       }
-    })
+    }
+    for (const source of SOURCES) {
+      cancels.push(requestSource(source.endpoint, timeout, win, lose))
+    }
   }
 
   const load = (nextPath) => {
@@ -173,7 +177,7 @@ export function createBusuanziCounter({ timeout = 12000, retryDelay = 1500 } = {
   return { data, status, hint, load, reload, offline, resume, dispose }
 }
 
-// Layout 内唯一的统计实例：首页、文章显示组件共享同一次请求。
+// Layout 内唯一的统计实例：首页与文章显示组件共享同一次竞速请求。
 export function provideBusuanzi(route) {
   const counter = createBusuanziCounter()
   let stopWatch

@@ -5,8 +5,10 @@ export default defineConfig({
   description: "A VitePress Site",
   head: [
     ["link", { rel: "icon", href: "/logo.svg" }],
-    // 统计逻辑随站点打包，预连接镜像的实际计数接口以减少移动端等待。
+    // 统计逻辑随站点打包、对官方与镜像多源并行竞速，故两者都预解析并预热连接。
+    ["link", { rel: "dns-prefetch", href: "//busuanzi.ibruce.info" }],
     ["link", { rel: "dns-prefetch", href: "//counter.busuanzi.icodeq.com" }],
+    ["link", { rel: "preconnect", href: "https://busuanzi.ibruce.info" }],
     ["link", { rel: "preconnect", href: "https://counter.busuanzi.icodeq.com" }],
   ],
   themeConfig: {
