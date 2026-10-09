@@ -38,6 +38,12 @@
 
         <!-- 统计卡片 -->
         <div class="stats-container">
+            <!-- 全站真实访问量（由不蒜子 busuanzi 统计，脚本已在 config.mts 全站引入） -->
+            <div class="stat-card">
+                <div class="stat-icon">👀</div>
+                <div class="stat-number" style="font-size: 24px; white-space: nowrap; font-variant-numeric: tabular-nums;"><span id="busuanzi_value_site_pv">--</span></div>
+                <div class="stat-label">总访问量</div>
+            </div>
             <div class="stat-card" v-for="stat in stats" :key="stat.label">
                 <div class="stat-icon">{{ stat.icon }}</div>
                 <div class="stat-number" :data-target="stat.number">{{ stat.number }}</div>

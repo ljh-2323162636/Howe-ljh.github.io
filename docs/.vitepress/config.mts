@@ -3,7 +3,11 @@ import { defineConfig  } from 'vitepress'
 export default defineConfig({
   title: "Howe",
   description: "A VitePress Site",
-  head: [["link", { rel: "icon", href: "/logo.svg" }]],
+  head: [
+    ["link", { rel: "icon", href: "/logo.svg" }],
+    // 不蒜子(busuanzi)访问量统计脚本，异步加载，全站生效
+    ["script", { async: "", src: "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" }],
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
