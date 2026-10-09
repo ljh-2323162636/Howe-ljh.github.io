@@ -38,11 +38,16 @@
 
         <!-- 统计卡片 -->
         <div class="stats-container">
-            <!-- 全站真实访问量（由不蒜子 busuanzi 统计，脚本已在 config.mts 全站引入） -->
-            <div class="stat-card">
+            <!-- 全站访问量共享 Layout 中的统计请求，失败时保留带标识的上次记录。 -->
+            <div class="stat-card visit-card">
                 <div class="stat-icon">👀</div>
-                <div class="stat-number" style="font-size: 24px; white-space: nowrap; font-variant-numeric: tabular-nums;"><span id="busuanzi_value_site_pv">--</span></div>
+                <div class="stat-number visit-number">
+                    <span id="busuanzi_value_site_pv">{{ visitData ? visitData.site_pv : '—' }}</span>
+                </div>
                 <div class="stat-label">总访问量</div>
+                <div class="visit-status" role="status" aria-live="polite">{{ visitHint }}</div>
+                <button v-if="visitStatus === 'failed' || visitStatus === 'offline'"
+                    class="visit-retry" type="button" @click="reloadVisits">重试</button>
             </div>
             <div class="stat-card" v-for="stat in stats" :key="stat.label">
                 <div class="stat-icon">{{ stat.icon }}</div>
@@ -55,6 +60,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useBusuanzi } from '../.vitepress/theme/useBusuanzi';
+
+const { data: visitData, status: visitStatus, hint: visitHint, reload: reloadVisits } = useBusuanzi();
 
 // 打字机效果
 const fullText = 'Stay foolish, Stay hungry.';
@@ -340,6 +348,40 @@ onMounted(() => {
     margin-bottom: 10px;
 }
 
+.visit-card {
+    min-width: 0;
+}
+
+.visit-number {
+    font-size: clamp(16px, 4.5vw, 24px);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.visit-status {
+    min-height: 20px;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.visit-retry {
+    min-width: 44px;
+    min-height: 44px;
+    margin-top: 6px;
+    padding: 8px 12px;
+    border: 1px solid #667eea;
+    border-radius: 8px;
+    color: #4b5fc1;
+    cursor: pointer;
+}
+
+.visit-retry:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
 .stat-label {
     color: #666;
     font-size: 14px;
@@ -367,7 +409,7 @@ onMounted(() => {
     }
 
     .stats-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 15px;
     }
 

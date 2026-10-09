@@ -1,8 +1,11 @@
 <script setup>
 import DefaultTheme from 'vitepress/theme'
+import { useRoute } from 'vitepress'
 import PageViews from './PageViews.vue'
+import { provideBusuanzi } from './useBusuanzi'
 
 const { Layout } = DefaultTheme
+provideBusuanzi(useRoute())
 </script>
 
 <template>

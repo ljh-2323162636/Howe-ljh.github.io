@@ -5,8 +5,9 @@ export default defineConfig({
   description: "A VitePress Site",
   head: [
     ["link", { rel: "icon", href: "/logo.svg" }],
-    // 不蒜子(busuanzi)访问量统计脚本，异步加载，全站生效
-    ["script", { async: "", src: "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" }],
+    // 统计逻辑随站点打包，预连接镜像的实际计数接口以减少移动端等待。
+    ["link", { rel: "dns-prefetch", href: "//counter.busuanzi.icodeq.com" }],
+    ["link", { rel: "preconnect", href: "https://counter.busuanzi.icodeq.com" }],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -98,7 +99,7 @@ export default defineConfig({
     },
     logo:'./logo.svg',
     footer:{
-      copyright:`Copyright@ 2019-${new Date().getFullYear()} Howe`
+      copyright:`Copyright@ 2019-${new Date().getFullYear()} Howe❤️钰儿`
     }
   },
   base:'/Howe-ljh.github.io'
