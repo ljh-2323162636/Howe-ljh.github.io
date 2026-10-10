@@ -127,6 +127,34 @@
                         <img src="/photos/p24.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
                         <div class="photo-caption">这是我生日脑婆送的花花 颜值又高又香 美丽的废物 ~</div>
                     </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p25.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">有人说不要退掉,不然就生气,结果其实很想要 很喜欢 女人呐 嘴太硬欠咬</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p26.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">年年皆胜意，岁岁常欢愉，一岁一礼，一寸欢喜</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p27.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">假装生气的嘟嘴脑婆 超可爱 有没有 ~</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p28.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">这张抓拍得还是很满意的 拍照技术杠杠的 ~</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p29.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">亲亲 亲亲 亲亲 狠狠亲 ~</div>
+                    </div>
+                    <div class="photo-card" @click="openPreview($event)">
+                        <img src="/photos/p30.jpg" alt="love" style="width: 100%; height: 200px; object-fit: contain;">
+                        <div class="photo-caption">有人大庭广众下 因为抽到这个还亲我 请叫我抽盲盒的神 ~</div>
+                    </div>
+                    <div class="photo-card">
+                        <video src="/photos/v1.mp4" controls preload="metadata" style="width: 100%; height: 200px; object-fit: contain; border-radius: 8px;"></video>
+                        <div class="photo-caption">脑婆脑婆  哎 ~</div>
+                    </div>
                 </div>
             </div>
 
@@ -157,6 +185,11 @@
                         <div class="timeline-dot"></div>
                         <div class="timeline-date">第400天 · 20260828</div>
                         <div class="timeline-content">400天最好的礼物就是脑婆来北京啦,期待期待嘿嘿~破台风,我劝你懂点事,耗子尾汁!</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">钰儿脑婆生日 · 20261010</div>
+                        <div class="timeline-content">一岁一礼,一寸欢喜,脑婆生日快乐呀!</div>
                     </div>
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
